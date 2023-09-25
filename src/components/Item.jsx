@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { removeProduct } from "../actions/removeProduct";
 import { editProduct } from "../actions/editProduct";
 
+
 export const Item = ({ caption, amount, id }) => {
    const [isEditMode, setEditMode] = useState(false);
    const [captionText, setCaptionText] = useState(caption);
@@ -14,21 +15,27 @@ export const Item = ({ caption, amount, id }) => {
    };
 
    const editHandler = () => {
-      setEditMode(!isEditMode);
-
       if (isEditMode) {
          dispatch(editProduct({
             id,
             caption: captionText,
             amount: amountValue,
-         })
-         );
+         }));
       }
+
+      setEditMode(!isEditMode);
    };
 
    const changeHandler = ({ target: { value, name } }) => {
-      if (value > 0) {
-         name === "caption" ? setCaptionText(value) : setAmountValue(value);
+      if (name === "caption") {
+         if (value.length <= 15) {
+            setCaptionText(value);
+         }
+      } else if (name === "amount") {
+         const parsedAmount = parseFloat(value);
+         if (!isNaN(parsedAmount) && parsedAmount <= 1000) {
+            setAmountValue(parsedAmount.toString());
+         }
       }
    };
 
@@ -44,7 +51,7 @@ export const Item = ({ caption, amount, id }) => {
                   name="caption"
                />
             ) : (
-               <span>{captionText.trim()} </span>
+               <span>{captionText.trim()}</span>
             )}
          </div>
          <div className="product-list__amount">

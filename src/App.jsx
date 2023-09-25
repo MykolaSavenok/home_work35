@@ -4,8 +4,8 @@ import { Item } from "./components/Item.jsx";
 import { addProduct } from "./actions/addProduct.js";
 
 const App = () => {
-   const [captionValue, setCaptionValue] = useState('');
-   const [amountValue, setAmountValue] = useState('');
+   const [captionValue, setCaptionValue] = useState();
+   const [amountValue, setAmountValue] = useState();
    const productList = useSelector((state) => state.products);
    const dispatch = useDispatch();
 
@@ -14,20 +14,18 @@ const App = () => {
 
       const parsedAmount = parseFloat(amountValue);
 
-      if (!isNaN(parsedAmount) && parsedAmount > 0) {
-         dispatch(
-            addProduct({
-              id: Date.now(),
-              caption: captionValue,
-              amount: amountValue,
-            })
-          );
+      if (!isNaN(parsedAmount) && parsedAmount > 0 && parsedAmount <= 1000) {
+         dispatch(addProduct({
+            id: Date.now(),
+            caption: captionValue,
+            amount: amountValue,
+         })
+         );
 
          setCaptionValue('');
          setAmountValue('');
       } else {
-
-         alert('Please enter a valid positive number for amount.');
+         alert('Please enter a valid positive number for amount. Max quantity 1000');
       }
    };
 

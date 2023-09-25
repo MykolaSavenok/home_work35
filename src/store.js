@@ -7,7 +7,7 @@ const saveStateToLocalStorage = (state) => {
       localStorage.setItem('reduxState', serializedState);
    } catch (error) {
 
-      console.error('Ошибка при сохранении состояния в localStorage:', error);
+      console.error('Error save localStorage:', error);
    }
 };
 
@@ -38,6 +38,5 @@ store.subscribe(() => {
 });
 
 export default store;
-
 
 
